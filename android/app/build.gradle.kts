@@ -1,3 +1,13 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -22,19 +32,12 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
-    def keystoreProperties = new Properties()
-    def keystorePropertiesFile = rootProject.file("key.properties")
-
-    if (keystorePropertiesFile.exists()) {
-        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-    }
-
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file("upload-keystore.jks")
-            storePassword keystoreProperties['storePassword']
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file("upload-keystore.jks")
+            storePassword = keystoreProperties["storePassword"] as String
         }
     }
 
@@ -53,7 +56,7 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }
