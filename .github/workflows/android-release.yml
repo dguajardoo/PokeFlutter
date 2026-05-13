@@ -1,5 +1,8 @@
 name: Android Release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -71,8 +74,6 @@ jobs:
           files: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/bundle/release/app-release.aab
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Notify Discord
         run: |
