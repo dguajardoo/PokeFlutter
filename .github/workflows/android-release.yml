@@ -67,8 +67,8 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Get version from pubspec
-          id: version
-          run: |
+        id: version
+        run: |
             VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | cut -d'+' -f1)
             echo "VERSION=$VERSION" >> $GITHUB_ENV
 
