@@ -62,3 +62,12 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "content": "🚀 Nueva build Android generada correctamente"
+          }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
